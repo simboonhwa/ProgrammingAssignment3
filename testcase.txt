@@ -12,7 +12,19 @@ best("NY", "hert attack")
 
 source("rankhospital.R")
 rankhospital("MD", "heart failure", 5)
+rankhospital("MD", "heart failure", "best")
 
+
+source("rankhospital.R")
+rankhospital("TX", "heart failure", 4)
+rankhospital("MD", "heart attack", "worst")
+rankhospital("MN", "heart attack", 5000)
+
+
+source("rankall.R")
+rankall("heart attack", 20)
+head(rankall("heart attack", 20), 10)
 
 error
 best("MD", "heart failure")
+

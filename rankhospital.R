@@ -1,6 +1,15 @@
 rankhospital<- function(state, outcome, num="best") {
-        MinRatio <- extracthospital(state, outcome)
-browser()
-	MinRatio$Hospital.Name[num]
+	source("best.R")
+	source("notbest.R")
 	
+	if (num=="best") 
+		best(state,outcome)
+	else {if (num=="worst") {notbest(state,outcome)}
+		else {
+        		MinRatio <- extracthospital(state, outcome)
+			MinRatio$Hospital.Name[num]
+		}
+	}
 }
+		
+

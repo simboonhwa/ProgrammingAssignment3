@@ -9,10 +9,14 @@ extracthospital <- function(state="all", outcome) {
 	
 	if (missing(outcome)  | is.null(MyOutcome[1]))
 		stop("invalid outcome")
+	
+	if (state!="all"){
+		MinRatio <- subset(Hospital, State==state, select=(c(MyOutcome,"Hospital.Name")))}
+	else {
+		MinRatio <- subset(Hospital, select=(c(MyOutcome,"Hospital.Name","State")))}
 
-	MinRation <- ifelse(state!="all",
-		subset(Hospital, State==state, select=(c(MyOutcome,"Hospital.Name"))),
-		subset(Hospital, select=(c(MyOutcome,"Hospital.Name"))))
+
+	#MinRatio <- ifelse(state!="all",subset(Hospital, State==state, select=(c(MyOutcome,"Hospital.Name"))), subset(Hospital, select=(c(MyOutcome,"Hospital.Name",State))))
 
 ## Check that state and outcome are valid
 	if (missing(state) | nrow(MinRatio)==0)
