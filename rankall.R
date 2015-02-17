@@ -1,29 +1,26 @@
 rankall <- function(outcome, num="best") {
-	#hospital.env <- new.env()
-	assign("Ratio", data.frame() , envir = .GlobalEnv)
-	#Ratio <- data.frame()
-	source("best.R")
 	source("extracthospital.R")
-	#Hospital <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
+	source("rankhospital.R")
 
-	#Ratio <- extracthospital(state="all", outcome)
+	# create a global Ratio data frame to be accessible by other function	
+	assign("Ratio.df", data.frame() , envir = .GlobalEnv)
 
-	allratio <- extracthospital(state="all", outcome)
-	SetGlobalRatio <- function (x){
-		myratio <- allratio[allratio$State==x,]		
-		assign("Ratio", myratio, envir = .GlobalEnv)
-		best(x,outcome)
+	# extract relevant column for all state
+	AllRatio <- extracthospital(state="all", outcome)
+
+	# generate a list of state code
+	state.l <- sort(unique(unlist(AllRatio$State)))
+
+	# function to extract extract only the df contain only that state and
+	# pass it to rankhospital function 
+	StateRatio <- function (mystate){
+		myratio <- AllRatio[AllRatio$State==mystate,]		
+		assign("Ratio.df", myratio, envir = .GlobalEnv)
+		rankhospital(mystate,outcome,num)
 	}
-	# assign global "Ratio" to be used by best funtcion)
-	#assign("Ratio", myratio, envir = hospital.env)
-	state.l <- unique(unlist(allratio$State))
-	ll <- lapply(state.l, function(x) SetGlobalRatio(x))
-	do.call(rbind,ll)
-	# convert the char to matrix
-	#result <- cbind(sapply(state.l, function(x) best(x,outcome)))
-	
-	#	MinRatio <- best(
-	#MinRatio <- extracthospital(state, outcome)
-	#MinRatio$Hospital.Name[num]
 
+	# state.l list are step through and each state are apply to StateRatio
+	# generate the list based on outcome	
+	Ratio.l <- lapply(state.l, function(x) StateRatio(x))
+	do.call(rbind,Ratio.l)
 }
