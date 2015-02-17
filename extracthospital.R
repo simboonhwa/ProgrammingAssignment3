@@ -11,7 +11,7 @@ extracthospital <- function(state="all", outcome) {
 		stop("invalid outcome")
 	
 	if (state!="all"){
-		MinRatio <- subset(Hospital, State==state, select=(c(MyOutcome,"Hospital.Name")))}
+		MinRatio <- subset(Hospital, State==state, select=(c(MyOutcome,"Hospital.Name","State")))}
 	else {
 		MinRatio <- subset(Hospital, select=(c(MyOutcome,"Hospital.Name","State")))}
 
